@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TruthLens — Verified News Intelligence</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="/" class="masthead-logo">
+      <div class="logo-icon">T</div>
+      <div>
+        <div class="logo-text">Truth<span>Lens</span></div>
+        <div class="masthead-tagline">News Verification Platform</div>
+      </div>
+    </a>
+    <nav class="masthead-nav">
+      <a href="/user_login" class="btn btn-ghost" style="font-size:13px;">Sign In</a>
+      <a href="/user_register" class="btn btn-primary">Get Started</a>
+      <a href="/channel_login" class="btn btn-ghost" style="font-size:13px;">Channel Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- BREAKING TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="ticker-label">Breaking</span>
+    <div class="ticker-scroll">
+      <span class="ticker-text">
+        TruthLens AI detects fake news in real-time &nbsp;•&nbsp; New Tamil language model achieves 94% accuracy &nbsp;•&nbsp; Over 10,000 articles verified this month &nbsp;•&nbsp; Political bias detection now available in Hindi &nbsp;•&nbsp; TruthLens expands to 6 regional languages &nbsp;&nbsp;&nbsp;
+        TruthLens AI detects fake news in real-time &nbsp;•&nbsp; New Tamil language model achieves 94% accuracy &nbsp;•&nbsp; Over 10,000 articles verified this month &nbsp;•&nbsp; Political bias detection now available in Hindi &nbsp;•&nbsp; TruthLens expands to 6 regional languages &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-image" src="https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Newsroom">
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <div class="hero-kicker">AI-Powered Journalism</div>
+      <h1 class="hero-title">Truth in Every <em>Story</em></h1>
+      <p class="hero-subtitle">TruthLens uses advanced AI to verify news authenticity across English, Tamil, and Hindi — exposing misinformation before it spreads.</p>
+      <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+        <a href="/user_register" class="btn btn-primary" style="padding:12px 24px;font-size:14px;">Start Verifying</a>
+        <a href="/channel_register" class="btn btn-ghost" style="padding:12px 24px;font-size:14px;">Register Channel</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrap">
+  <div class="main-layout">
+
+    <!-- NEWS FEED -->
+    <main>
+      <div class="section-header">
+        <h2 class="section-title">Latest News</h2>
+        <div class="section-rule"></div>
+        <span class="section-count">{{ news | length }} Articles</span>
+      </div>
+
+      {% if news %}
+      <div class="news-grid">
+        {% for n in news %}
+        <div class="card" style="animation-delay: {{ loop.index0 * 0.05 }}s">
+
+          {% set thumb_urls = [
+            'https://images.pexels.com/photos/3944454/pexels-photo-3944454.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/1369476/pexels-photo-1369476.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/3760809/pexels-photo-3760809.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/1550337/pexels-photo-1550337.jpeg?auto=compress&cs=tinysrgb&w=600'
+          ] %}
+          <img class="card-thumb" src="{{ thumb_urls[loop.index0 % thumb_urls|length] }}" alt="News image" loading="lazy">
+
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-category">Latest</span>
+              <span class="dot">·</span>
+              <span>Just now</span>
+            </div>
+            <h3 class="card-title">{{ n['title'] }}</h3>
+            <p class="card-excerpt">{{ n['content'] }}</p>
+            <span class="card-lang-badge">{{ n['language'] }}</span>
+          </div>
+
+          <div class="card-footer">
+            <span class="channel-name">{{ n['channel_name'] or 'TruthLens' }}</span>
+            <a href="/user_login" class="btn btn-outline" style="font-size:11px;padding:5px 12px;">Verify</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div style="text-align:center;padding:80px 40px;background:white;border:1px solid var(--rule);border-radius:2px;">
+        <div style="font-size:48px;margin-bottom:16px;">📰</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px;">No articles yet</h3>
+        <p style="color:var(--ink-3);font-size:14px;">Channels will publish verified news here.</p>
+        <a href="/channel_register" class="btn btn-primary" style="margin-top:20px;">Register Your Channel</a>
+      </div>
+      {% endif %}
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-widget">
+        <div class="widget-header">Platform Stats</div>
+        <div class="widget-body">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-num">{{ news | length }}</div>
+              <div class="stat-label">Articles</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num green">94%</div>
+              <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num red">3</div>
+              <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">AI</div>
+              <div class="stat-label">Powered</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-widget" style="overflow:hidden;">
+        <img class="sidebar-image" src="https://images.pexels.com/photos/3944454/pexels-photo-3944454.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Newsroom">
+        <div class="widget-body">
+          <h4 style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:8px;">Are you a journalist?</h4>
+          <p style="font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:14px;">Register your news channel and get AI-powered fact-checking for every story you publish.</p>
+          <a href="/channel_register" class="btn btn-primary" style="width:100%;justify-content:center;">Register Channel</a>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-header">Languages Supported</div>
+        <div class="widget-body" style="display:flex;flex-direction:column;gap:10px;">
+          {% for lang, flag in [('English', '🇬🇧'), ('Tamil', '🇮🇳'), ('Hindi', '🇮🇳')] %}
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--paper);border-radius:2px;">
+            <span style="font-size:20px;">{{ flag }}</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ lang }}</div>
+              <div style="font-size:11px;color:var(--ink-4);">AI model active</div>
+            </div>
+            <div style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--verified);"></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>TruthLens</h3>
+        <p>Advanced AI-powered news verification platform for English, Tamil, and Hindi content. Fighting misinformation with machine learning.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="/user_login">User Login</a>
+        <a href="/user_register">Create Account</a>
+        <a href="/channel_register">Register Channel</a>
+        <a href="/channel_login">Channel Login</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="#">How It Works</a>
+        <a href="#">AI Models</a>
+        <a href="#">Accuracy Reports</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 TruthLens. All rights reserved.</span>
+      <span>Built with AI for a truthful tomorrow</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

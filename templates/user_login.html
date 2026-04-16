@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — TruthLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- VISUAL SIDE -->
+  <div class="auth-visual">
+    <img src="https://images.pexels.com/photos/1369476/pexels-photo-1369476.jpeg?auto=compress&cs=tinysrgb&w=1260" alt="Newsroom">
+    <div class="auth-visual-overlay">
+      <div class="auth-visual-logo">
+        <div class="logo-icon" style="width:40px;height:40px;font-size:20px;">T</div>
+        <div class="logo-text" style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:white;">Truth<span style="color:#e74c3c;">Lens</span></div>
+      </div>
+      <div>
+        <p class="auth-visual-quote">"The truth is rarely pure and never simple."</p>
+        <p class="auth-visual-attr">— Oscar Wilde</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM SIDE -->
+  <div class="auth-form-side">
+    <div class="auth-form-inner">
+
+      <h1 class="auth-heading">Welcome back</h1>
+      <p class="auth-subheading">Sign in to your TruthLens account to access the news verification dashboard.</p>
+
+      {% if error %}
+      <div style="background:#fff5f5;border:1px solid #f5c0bc;border-left:4px solid var(--accent);padding:12px 16px;border-radius:2px;font-size:13px;color:var(--accent);margin-bottom:20px;">
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form method="POST" action="/user_login">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input class="form-input" type="text" name="username" placeholder="Enter your username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="form-btn">Sign In</button>
+      </form>
+
+      <div class="auth-divider"><span>New to TruthLens?</span></div>
+
+      <div class="auth-link">
+        <a href="/user_register">Create a free account →</a>
+      </div>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="/channel_login" style="font-size:12px;color:var(--ink-4);text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+          <span style="width:20px;height:1px;background:var(--rule);display:inline-block;"></span>
+          Sign in as a News Channel
+          <span style="width:20px;height:1px;background:var(--rule);display:inline-block;"></span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

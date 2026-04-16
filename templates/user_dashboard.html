@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TruthLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="/" class="masthead-logo">
+      <div class="logo-icon">T</div>
+      <div>
+        <div class="logo-text">Truth<span>Lens</span></div>
+        <div class="masthead-tagline">News Verification Platform</div>
+      </div>
+    </a>
+    <div class="masthead-nav">
+      <div class="masthead-user">
+        <span>{{ session['username'] }}</span>
+        <span class="badge">Reader</span>
+      </div>
+      <a href="/logout" class="btn btn-ghost" style="font-size:12px;">Sign Out</a>
+    </div>
+  </div>
+</header>
+
+<!-- BREAKING TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="ticker-label">Live</span>
+    <div class="ticker-scroll">
+      <span class="ticker-text">
+        Click "Check Fake or Real" on any article to run AI analysis &nbsp;•&nbsp; TruthLens uses transformer models trained on multilingual news datasets &nbsp;•&nbsp; Political bias detection powered by NLP &nbsp;•&nbsp; All results are AI-generated and should be cross-referenced &nbsp;&nbsp;&nbsp;
+        Click "Check Fake or Real" on any article to run AI analysis &nbsp;•&nbsp; TruthLens uses transformer models trained on multilingual news datasets &nbsp;•&nbsp; Political bias detection powered by NLP &nbsp;•&nbsp; All results are AI-generated and should be cross-referenced &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD HERO STRIP -->
+<div style="background:var(--ink);padding:24px 0;border-bottom:3px solid var(--paper-3);">
+  <div class="page-wrap" style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div>
+      <div style="font-size:11px;color:var(--accent-2);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Reader Dashboard</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--paper);">Good day, {{ session['username'] }}</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,.45);margin-top:4px;">{{ news | length }} articles ready for verification</p>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div style="text-align:center;padding:12px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;">{{ news | length }}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Total Articles</div>
+      </div>
+      <div style="text-align:center;padding:12px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#6fcf97;">3</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Languages</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrap">
+  <div class="main-layout">
+
+    <main>
+      <div class="section-header">
+        <h2 class="section-title">All Channel News</h2>
+        <div class="section-rule"></div>
+        <span class="section-count">{{ news | length }} Articles</span>
+      </div>
+
+      {% if news %}
+      <div class="news-grid">
+        {% for n in news %}
+        {% set thumb_urls = [
+          'https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/1369476/pexels-photo-1369476.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/3760809/pexels-photo-3760809.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/1550337/pexels-photo-1550337.jpeg?auto=compress&cs=tinysrgb&w=600',
+          'https://images.pexels.com/photos/3944454/pexels-photo-3944454.jpeg?auto=compress&cs=tinysrgb&w=600'
+        ] %}
+        <div class="card" style="animation-delay: {{ loop.index0 * 0.04 }}s">
+          <img class="card-thumb" src="{{ thumb_urls[loop.index0 % thumb_urls|length] }}" alt="News" loading="lazy">
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-category">Verification</span>
+              <span class="dot">·</span>
+              <span>{{ n['language'] }}</span>
+            </div>
+            <h3 class="card-title">{{ n['title'] }}</h3>
+            <p class="card-excerpt" id="excerpt-{{ n['id'] }}">{{ n['content'] }}</p>
+            <button class="read-more-btn" onclick="toggleFullNews({{ n['id'] }})">
+              Read More
+            </button>
+            <span class="card-lang-badge">{{ n['language'] }}</span>
+
+            <button class="detect-btn" data-id="{{ n['id'] }}" onclick="detectNews({{ n['id'] }})">
+              🔍 Check Fake or Real
+            </button>
+
+            <div id="result-{{ n['id'] }}">
+              {% if n['is_fake'] %}
+              <div class="analysis-box {{ 'verdict-fake' if n['is_fake'] == 'Fake' else 'verdict-real' }}">
+                <div class="verdict-header">
+                  <div class="verdict-icon">{{ '✕' if n['is_fake'] == 'Fake' else '✓' }}</div>
+                  <div class="verdict-label">{{ 'Fake News Detected' if n['is_fake'] == 'Fake' else 'Verified Real News' }}</div>
+                  <div class="verdict-confidence">{{ n['confidence'] }}%</div>
+                </div>
+                <div class="confidence-bar">
+                  <div class="confidence-fill" style="width:{{ n['confidence'] }}%"></div>
+                </div>
+                <div class="verdict-body">
+                  <div class="verdict-row"><span class="vr-label">Beneficiary</span><span class="vr-value">{{ n['beneficiary'] }}</span></div>
+                  <div class="verdict-row"><span class="vr-label">Source</span><span class="vr-value">{{ n['origin'] }}</span></div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="channel-name">{{ n['channel_name'] or 'Unknown Channel' }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div style="text-align:center;padding:80px;background:white;border:1px solid var(--rule);border-radius:2px;">
+        <div style="font-size:48px;margin-bottom:16px;">📰</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;">No articles published yet</h3>
+        <p style="font-size:14px;color:var(--ink-3);">Check back soon — channels are publishing content.</p>
+      </div>
+      {% endif %}
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div style="background:white;border:1px solid var(--rule);border-radius:2px;overflow:hidden;margin-bottom:24px;">
+        <img src="https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=400" alt="" style="width:100%;height:140px;object-fit:cover;display:block;">
+        <div style="padding:18px 20px;">
+          <div style="font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">How It Works</div>
+          <p style="font-size:13px;color:var(--ink-3);line-height:1.6;">Click <strong>"Check Fake or Real"</strong> on any article. Our AI analyses content using transformer models and returns a verdict with confidence score.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-header">AI Models</div>
+        <div class="widget-body" style="display:flex;flex-direction:column;gap:10px;">
+          {% for lang, acc in [('English', '96'), ('Tamil', '92'), ('Hindi', '94')] %}
+          <div style="padding:10px 12px;background:var(--paper);border-radius:2px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ lang }}</span>
+              <span style="font-size:12px;font-weight:600;color:var(--verified);">{{ acc }}%</span>
+            </div>
+            <div style="height:4px;background:var(--rule);border-radius:2px;">
+              <div style="height:100%;width:{{ acc }}%;background:var(--verified);border-radius:2px;"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-header">Verdict Guide</div>
+        <div class="widget-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--real-green);color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--real-green);">Real</div>
+              <div style="font-size:12px;color:var(--ink-4);margin-top:2px;line-height:1.5;">Content verified as authentic by AI models.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--fake-red);color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--fake-red);">Fake</div>
+              <div style="font-size:12px;color:var(--ink-4);margin-top:2px;line-height:1.5;">Detected patterns consistent with misinformation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="padding-top:0;border-top:none;">
+      <span>© 2025 TruthLens</span>
+      <span>Signed in as <strong style="color:var(--paper);">{{ session['username'] }}</strong></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

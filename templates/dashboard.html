@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - TruthLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+
+<header>
+    <h1>TruthLens Dashboard</h1>
+    <a href="/logout" class="btn">Logout</a>
+</header>
+
+<div class="container">
+
+    <div class="upload-box">
+        <h2>Upload News</h2>
+        <form method="POST" action="/upload">
+            <input type="text" name="title" placeholder="News Title" required>
+            <textarea name="content" placeholder="News Content" required></textarea>
+            <select name="language">
+                <option>English</option>
+                <option>Tamil</option>
+                <option>Hindi</option>
+            </select>
+            <button type="submit" class="btn">Upload</button>
+        </form>
+    </div>
+
+    <h2>All News</h2>
+
+    {% for n in news %}
+    <div class="card">
+        <h3>{{ n['title'] }}</h3>
+        <p>{{ n['content'] }}</p>
+
+        <button onclick="detectNews({{n['id']}})" class="detect-btn">
+            Check Fake or Real
+        </button>
+
+        <div id="result-{{n['id']}}" class="result-box"></div>
+    </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

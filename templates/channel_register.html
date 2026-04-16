@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Channel — TruthLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- REGISTER HEADER -->
+<div class="register-header">
+  <div class="register-header-inner">
+    <a href="/" class="masthead-logo" style="text-decoration:none;">
+      <div class="logo-icon">T</div>
+      <div>
+        <div class="logo-text">Truth<span>Lens</span></div>
+        <div class="masthead-tagline">News Verification Platform</div>
+      </div>
+    </a>
+    <a href="/channel_login" class="btn btn-ghost" style="font-size:13px;">Already registered? Sign in</a>
+  </div>
+</div>
+
+<!-- HERO STRIP -->
+<div style="background:var(--paper-2);border-bottom:1px solid var(--rule);padding:28px 0;overflow:hidden;position:relative;">
+  <img src="https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.08;">
+  <div style="max-width:960px;margin:0 auto;padding:0 32px;position:relative;">
+    <div style="font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Channel Registration</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--ink);">Register Your News Channel</h1>
+    <p style="font-size:14px;color:var(--ink-3);margin-top:6px;">Join TruthLens and get AI-powered fact-checking for your journalism.</p>
+  </div>
+</div>
+
+<div class="register-body">
+
+  <div class="register-card">
+
+    <form method="POST" action="/channel_register">
+
+      <!-- CHANNEL INFO -->
+      <div class="register-section-title">Channel Information</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Channel Name *</label>
+          <input class="form-input" type="text" name="channel_name" placeholder="e.g. The Daily Dispatch" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Owner / Editor Name *</label>
+          <input class="form-input" type="text" name="owner_name" placeholder="Full name" required>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="register-section-title">Contact Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Official Email *</label>
+          <input class="form-input" type="email" name="email" placeholder="newsroom@channel.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input class="form-input" type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Office / Registered Address *</label>
+        <textarea class="form-textarea" name="address" placeholder="Full postal address of your newsroom" required style="min-height:70px;"></textarea>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="register-section-title">Account Security</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Password *</label>
+          <input class="form-input" type="password" name="password" placeholder="Create a strong password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password *</label>
+          <input class="form-input" type="password" placeholder="Repeat password">
+        </div>
+      </div>
+
+      <!-- NOTICE -->
+      <div style="background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;padding:14px 18px;margin:20px 0;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:18px;flex-shrink:0;">ℹ️</span>
+        <p style="font-size:12.5px;color:var(--ink-3);line-height:1.6;">Channel registration is reviewed by the TruthLens team. You will receive confirmation via email within 24 hours. Your channel must be a legitimate registered news organisation.</p>
+      </div>
+
+      <button type="submit" class="form-btn">Submit Registration →</button>
+
+    </form>
+
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <a href="/channel_login" style="font-size:13px;color:var(--ink-3);text-decoration:none;">Already registered? <span style="color:var(--accent);font-weight:600;">Sign in →</span></a>
+  </div>
+
+</div>
+
+</body>
+</html>

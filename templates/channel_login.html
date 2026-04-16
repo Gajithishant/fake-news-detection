@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Channel Login — TruthLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- VISUAL SIDE -->
+  <div class="auth-visual">
+    <img src="https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=1260" alt="Broadcasting">
+    <div class="auth-visual-overlay">
+      <div class="auth-visual-logo">
+        <div class="logo-icon" style="width:40px;height:40px;font-size:20px;">T</div>
+        <div class="logo-text" style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:white;">Truth<span style="color:#e74c3c;">Lens</span></div>
+      </div>
+      <div>
+        <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:20px 24px;margin-bottom:28px;">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Channel Portal</div>
+          <p style="font-size:14px;color:rgba(255,255,255,.8);line-height:1.6;">Publish your stories and let our AI verify every article before it reaches your audience.</p>
+        </div>
+        <p class="auth-visual-quote">"Without facts, there can be no freedom."</p>
+        <p class="auth-visual-attr">— Walter Cronkite</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM SIDE -->
+  <div class="auth-form-side">
+    <div class="auth-form-inner">
+
+      <div style="display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:1px solid var(--rule);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--accent-warm);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:20px;">
+        📡 Channel Portal
+      </div>
+
+      <h1 class="auth-heading">Channel Sign In</h1>
+      <p class="auth-subheading">Access your newsroom dashboard to publish and verify stories.</p>
+
+      <form method="POST" action="/channel_login">
+        <div class="form-group">
+          <label class="form-label">Channel Name</label>
+          <input class="form-input" type="text" name="channel_name" placeholder="Your registered channel name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" name="password" placeholder="Channel password" required>
+        </div>
+        <button type="submit" class="form-btn">Access Dashboard</button>
+      </form>
+
+      <div class="auth-divider"><span>New channel?</span></div>
+
+      <div class="auth-link">
+        <a href="/channel_register">Register your news channel →</a>
+      </div>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="/user_login" style="font-size:12px;color:var(--ink-4);text-decoration:none;">← Back to User Login</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
